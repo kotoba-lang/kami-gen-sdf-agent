@@ -1,0 +1,33 @@
+{:paths ["src"]
+ :deps
+ {;; Real, load-bearing dependency: Marching Cubes SDF -> mesh, used as-is
+  ;; (kami.gen.sdf-agent/compile-program calls mesher/sdf-to-colored-mesh
+  ;; directly -- this is the one dependency this repo's compile step
+  ;; actually runs through).
+  io.github.kotoba-lang/mesher {:local/root "../mesher"}
+
+  ;; kotoba-lang/sdf is currently a scaffold repo with no functions (its
+  ;; README says so explicitly: "Scaffold only -- the CLJC restoration is
+  ;; pending"). Kept as a :local/root dependency for forward-compat and to
+  ;; document intent -- this repo's own src/kami/gen/sdf_agent/sdf.clj is
+  ;; the real, load-bearing SDF primitive/combinator math for v0, and the
+  ;; natural migration target once kotoba-lang/sdf grows real functions.
+  ;; Not currently required by any namespace here.
+  io.github.kotoba-lang/sdf {:local/root "../sdf"}
+
+  ;; kotoba-lang/scad is a real, tested OpenSCAD-text CSG evaluator
+  ;; (sphere/cube/cylinder, transform blocks, union/difference/intersection
+  ;; groups -- though difference/intersection there are Phase-1 visual
+  ;; approximations evaluated as union). Kept as a :local/root dependency
+  ;; for vocabulary/interop parity with the org's other CSG work, but not
+  ;; required by v0's pipeline: this repo's own EDN CSG tree (see
+  ;; kami.gen.sdf-agent.sdf's grammar docstring) is a more constrained,
+  ;; structured-LLM-output-friendly input than raw OpenSCAD text.
+  io.github.kotoba-lang/scad {:local/root "../scad"}}
+
+ :aliases
+ {:test {:extra-paths ["test"]
+         :extra-deps {io.github.cognitect-labs/test-runner
+                      {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+         :main-opts ["-m" "cognitect.test-runner"]
+         :exec-fn cognitect.test-runner.api/test}}}
