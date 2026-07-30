@@ -4,7 +4,8 @@
   ;; (kami.gen.sdf-agent/compile-program calls mesher/sdf-to-colored-mesh
   ;; directly -- this is the one dependency this repo's compile step
   ;; actually runs through).
-  io.github.kotoba-lang/mesher {:local/root "../mesher"}
+  io.github.kotoba-lang/mesher {:git/url "https://github.com/kotoba-lang/mesher.git"
+                                     :git/sha "4eba597c2b50e1b77d256e62bc0289f1e5fb3f51"}
 
   ;; kotoba-lang/sdf is currently a scaffold repo with no functions (its
   ;; README says so explicitly: "Scaffold only -- the CLJC restoration is
@@ -13,7 +14,8 @@
   ;; the real, load-bearing SDF primitive/combinator math for v0, and the
   ;; natural migration target once kotoba-lang/sdf grows real functions.
   ;; Not currently required by any namespace here.
-  io.github.kotoba-lang/sdf {:local/root "../sdf"}
+  io.github.kotoba-lang/sdf {:git/url "https://github.com/kotoba-lang/sdf.git"
+                                     :git/sha "b91b1147b493b04aaf0c9b399e0ab0274c0c179b"}
 
   ;; kotoba-lang/scad is a real, tested OpenSCAD-text CSG evaluator
   ;; (sphere/cube/cylinder, transform blocks, union/difference/intersection
@@ -23,7 +25,8 @@
   ;; required by v0's pipeline: this repo's own EDN CSG tree (see
   ;; kami.gen.sdf-agent.sdf's grammar docstring) is a more constrained,
   ;; structured-LLM-output-friendly input than raw OpenSCAD text.
-  io.github.kotoba-lang/scad {:local/root "../scad"}}
+  io.github.kotoba-lang/scad {:git/url "https://github.com/kotoba-lang/scad.git"
+                                     :git/sha "592c0a8647d88980fb5f82da25738eee0404276f"}}
 
  :aliases
  {:test {:extra-paths ["test"]
