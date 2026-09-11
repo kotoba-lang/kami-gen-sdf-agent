@@ -163,5 +163,5 @@ temp dir), `:render-opts` (passed through to `render-preview!`, e.g.
 ## Develop
 
 ```bash
-clojure -M:test
+kbb -M:test
 ```
