@@ -10,7 +10,7 @@
   ;; kotoba-lang/sdf is currently a scaffold repo with no functions (its
   ;; README says so explicitly: "Scaffold only -- the CLJC restoration is
   ;; pending"). Kept as a :local/root dependency for forward-compat and to
-  ;; document intent -- this repo's own src/kami/gen/sdf_agent/sdf.clj is
+  ;; document intent -- this repo's own src/kami/gen/sdf_agent/sdf.cljk is
   ;; the real, load-bearing SDF primitive/combinator math for v0, and the
   ;; natural migration target once kotoba-lang/sdf grows real functions.
   ;; Not currently required by any namespace here.
