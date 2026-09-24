@@ -32,7 +32,7 @@
             [kami.gen.sdf-agent.propose :as propose]
             [kami.gen.sdf-agent.critique :as critique]
             [mesher :as mesher]
-            [clojure.java.io :as io]))
+            [kotoba.io :as io]))
 
 (def default-max-rounds 4)
 (def default-resolution 40)

@@ -1,6 +1,6 @@
 (ns kami.gen.sdf-agent-test
   (:require [kotoba.test :refer [deftest is testing]]
-            [clojure.java.io :as io]
+            [kotoba.io :as io]
             [kami.gen.sdf-agent :as agent]
             [kami.gen.sdf-agent.sdf :as sdf]
             [kami.gen.sdf-agent.render :as render]
@@ -95,8 +95,8 @@
         path (str (io/file (tmp-dir "render") "sphere.png"))
         stats (render/render-preview! mesh vertex-colors path {:width 120 :height 120})
         f (io/file path)]
-    (is (.exists f))
-    (is (pos? (.length f)))
+    (is (io/exists? f))
+    (is (pos? (io/length f)))
     (is (pos? (:triangle-count stats)))
     (is (pos? (:non-background-pixel-count stats)))
     (let [result (critique/default-critique path "a plain yellow ball")]
@@ -125,7 +125,7 @@
       (is (pos? (get-in result [:mesh :vertex-count])))
       (is (pos? (get-in result [:mesh :index-count])))
       (is (= 1 (count (:history result))))
-      (is (.exists (io/file (:render result)))))))
+      (is (io/exists? (io/file (:render result)))))))
 
 ;; ---------------------------------------------------------------------------
 ;; max-rounds bound is respected AND surfaced (never a silent cap)
