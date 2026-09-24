@@ -14,9 +14,7 @@
   :vertices [floats, interleaved pos3+norm3+uv2 per vertex] :indices [ints]}`.
   `vertex-colors` (from `mesher/sdf-to-colored-mesh`) is a parallel vector of
   `[r g b a]` (0.0-1.0) per vertex."
-  (:require [kotoba.io :as io])
-  (:import [java.awt.image BufferedImage]
-           [javax.imageio ImageIO]))
+  (:require [kotoba.image :as image] [kotoba.io :as io]))
 
 (def ^:private stride 8) ;; pos3 + norm3 + uv2, per mesher's vertex layout
 
@@ -86,12 +84,12 @@
   ([{:keys [vertex-count vertices indices] :as mesh} vertex-colors path
     {:keys [width height] :or {width 220 height 220}}]
    (let [[bg-r bg-g bg-b] background-rgb
-         img (BufferedImage. width height BufferedImage/TYPE_INT_RGB)
+         img (image/create width height :rgb)
          bg-argb (pack-argb bg-r bg-g bg-b)]
-     (dotimes [y height] (dotimes [x width] (.setRGB img x y bg-argb)))
+     (dotimes [y height] (dotimes [x width] (image/set-rgb! img x y bg-argb)))
      (if (or (zero? vertex-count) (empty? indices))
        (do (io/make-parents path)
-           (ImageIO/write img "png" (io/file (str path)))
+           (image/write-png-file! img (io/file (str path)))
            {:path (str path) :width width :height height :triangle-count 0
             :non-background-pixel-count 0})
        (let [basis (camera-basis)
@@ -151,8 +149,8 @@
 
          (dotimes [y height]
            (dotimes [x width]
-             (.setRGB img x y (aget cbuf (+ x (* y width))))))
+             (image/set-rgb! img x y (aget cbuf (+ x (* y width))))))
          (io/make-parents path)
-         (ImageIO/write img "png" (io/file (str path)))
+         (image/write-png-file! img (io/file (str path)))
          {:path (str path) :width width :height height :triangle-count tri-count
           :non-background-pixel-count (count (remove #(= % bg-argb) cbuf))})))))

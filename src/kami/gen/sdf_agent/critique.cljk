@@ -20,10 +20,9 @@
   and returns an `:edit-suggestion` that `kami.gen.sdf-agent.propose`'s
   default `apply-edit` knows how to interpret, targeting whichever
   sub-score is worst."
-  (:require [kotoba.io :as kio] [kami.gen.sdf-agent.render :as render])
-  (:import [javax.imageio ImageIO]))
+  (:require [kotoba.image :as image] [kotoba.io :as kio] [kami.gen.sdf-agent.render :as render]))
 
-(defn- read-image [path] (ImageIO/read (kio/file (str path))))
+(defn- read-image [path] (image/read-file (kio/file (str path))))
 
 (defn- yellow-ish?
   "Crude yellow classifier on 0-255 RGB: bright, red+green dominant, low blue."
@@ -35,13 +34,13 @@
   color `kami.gen.sdf-agent.render/background-rgb`) for: how many pixels are
   foreground (the rendered silhouette), how many of those look yellow, and
   the foreground's 2D bounding box."
-  [^java.awt.image.BufferedImage img]
-  (let [w (.getWidth img) h (.getHeight img)
+  [img]
+  (let [w (image/width img) h (image/height img)
         [bg-r bg-g bg-b] render/background-rgb
         bg-argb (bit-or (bit-shift-left 255 24) (bit-shift-left bg-r 16) (bit-shift-left bg-g 8) bg-b)]
     (reduce
      (fn [acc [x y]]
-       (let [argb (.getRGB img (int x) (int y))]
+       (let [argb (image/get-rgb img (int x) (int y))]
          (if (= argb bg-argb)
            acc
            (let [r (bit-and (bit-shift-right argb 16) 0xFF)
