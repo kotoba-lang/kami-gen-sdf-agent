@@ -14,10 +14,9 @@
   :vertices [floats, interleaved pos3+norm3+uv2 per vertex] :indices [ints]}`.
   `vertex-colors` (from `mesher/sdf-to-colored-mesh`) is a parallel vector of
   `[r g b a]` (0.0-1.0) per vertex."
-  (:require [clojure.java.io :as io])
+  (:require [kotoba.io :as io])
   (:import [java.awt.image BufferedImage]
-           [javax.imageio ImageIO]
-           [java.io File]))
+           [javax.imageio ImageIO]))
 
 (def ^:private stride 8) ;; pos3 + norm3 + uv2, per mesher's vertex layout
 
@@ -92,7 +91,7 @@
      (dotimes [y height] (dotimes [x width] (.setRGB img x y bg-argb)))
      (if (or (zero? vertex-count) (empty? indices))
        (do (io/make-parents path)
-           (ImageIO/write img "png" (File. (str path)))
+           (ImageIO/write img "png" (io/file (str path)))
            {:path (str path) :width width :height height :triangle-count 0
             :non-background-pixel-count 0})
        (let [basis (camera-basis)
@@ -154,6 +153,6 @@
            (dotimes [x width]
              (.setRGB img x y (aget cbuf (+ x (* y width))))))
          (io/make-parents path)
-         (ImageIO/write img "png" (File. (str path)))
+         (ImageIO/write img "png" (io/file (str path)))
          {:path (str path) :width width :height height :triangle-count tri-count
           :non-background-pixel-count (count (remove #(= % bg-argb) cbuf))})))))

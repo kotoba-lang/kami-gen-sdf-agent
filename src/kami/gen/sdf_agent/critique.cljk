@@ -20,11 +20,10 @@
   and returns an `:edit-suggestion` that `kami.gen.sdf-agent.propose`'s
   default `apply-edit` knows how to interpret, targeting whichever
   sub-score is worst."
-  (:require [kami.gen.sdf-agent.render :as render])
-  (:import [javax.imageio ImageIO]
-           [java.io File]))
+  (:require [kotoba.io :as kio] [kami.gen.sdf-agent.render :as render])
+  (:import [javax.imageio ImageIO]))
 
-(defn- read-image [path] (ImageIO/read (File. (str path))))
+(defn- read-image [path] (ImageIO/read (kio/file (str path))))
 
 (defn- yellow-ish?
   "Crude yellow classifier on 0-255 RGB: bright, red+green dominant, low blue."
