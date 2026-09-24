@@ -1,5 +1,5 @@
 (ns kami.gen.sdf-agent-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [clojure.java.io :as io]
             [kami.gen.sdf-agent :as agent]
             [kami.gen.sdf-agent.sdf :as sdf]
